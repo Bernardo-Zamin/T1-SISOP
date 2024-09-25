@@ -1,3 +1,4 @@
+
 public class Processo {
     String nome;
     int tempoExecutando;
@@ -16,16 +17,15 @@ public class Processo {
         this.surtoCPU = surtoCPU;
         this.tempoES = tempoES;
         this.tempoTotalCPU = tempoTotalCPU;
-        this.tempoExecutando = 0; // Inicializa em 0, já que o processo ainda não começou a execução
+        this.tempoExecutando = 0;
         this.ordem = ordem;
         this.prioridade = prioridade;
-        this.creditos = prioridade; 
-        this.tempoBloqueado = 0; // Inicializa com 0, bloqueio ocorrerá após a execução de um surto
+        this.creditos = prioridade;
+        this.tempoBloqueado = 0;
         this.bloqueado = false;
         this.terminou = false;
     }
 
-    // Executa o processo, decrementando créditos e tempo de CPU
     public void executar() {
         if (creditos > 0 && !bloqueado) {
             creditos--;
@@ -34,46 +34,38 @@ public class Processo {
         }
     }
 
-    // Bloqueia o processo após o término do surto de CPU ou se já atingiu o tempo de ES
     public void bloquear() {
         if (tempoExecutando >= surtoCPU && !bloqueado && tempoES > 0) {
             bloqueado = true;
-            tempoBloqueado = tempoES;  
+            tempoBloqueado = tempoES;
             System.out.println(nome + " está bloqueado por " + tempoBloqueado + " unidades de tempo.");
-            tempoExecutando = 0; 
+            tempoExecutando = 0;
         }
     }
 
-    // Desbloqueia o processo após o tempo de ES ter passado
     public void desbloquear() {
-            bloqueado = false;
+        bloqueado = false;
 
-        
     }
 
-    // Verifica se o processo está pronto para executar
     public boolean estaPronto() {
         return !bloqueado && tempoTotalCPU > 0;
     }
 
-    // Verifica se o processo terminou a execução
     public boolean estaTerminado() {
         return tempoTotalCPU <= 0;
     }
 
-    // Atualiza o estado do processo quando ele termina
     public void atualizarEstado() {
         if (tempoTotalCPU <= 0) {
             terminou = true;
         }
     }
 
-    // Verifica se o processo está bloqueado
     public boolean estaBloqueado() {
         return bloqueado;
     }
 
-    // Imprime o estado atual do processo
     public void imprimirEstado(boolean isRunning) {
         if (isRunning) {
             System.out.println(nome + " - " + creditos + " créditos - Running");
